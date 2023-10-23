@@ -11,6 +11,7 @@ const ContactUs = () => {
 
   const [verified, setVerified] = useState(false);
   const [done, setDone] = useState(false);
+  const [captchaRequired, setCaptchaRequired] = useState(false);
   const form = useRef();
 
   function onChange(value) {
@@ -20,6 +21,11 @@ const ContactUs = () => {
 
   const sendEmail = (e) => {
     e.preventDefault();
+
+    if (!verified) {
+      setCaptchaRequired(true); // CAPTCHA is required
+      return;
+    }
 
     emailjs
       .sendForm(
@@ -37,6 +43,7 @@ const ContactUs = () => {
           form.current.mobile_no.value = "";
           form.current.user_email.value = "";
           form.current.message.value = "";
+          setVerified(false);
         },
         (error) => {
           console.log(error.text);
@@ -121,6 +128,11 @@ const ContactUs = () => {
                 sitekey="6LdCvQ0mAAAAAAEohGw423MngE8OQQ3D8aSNnywu"
                 onChange={onChange}
               />
+              {captchaRequired && ( // Display the message conditionally
+                <div className="text-red-600 text-center mt-2">
+                  CAPTCHA verification is required before sending the form.
+                </div>
+              )}
               <button
                 disabled={!verified}
                 required

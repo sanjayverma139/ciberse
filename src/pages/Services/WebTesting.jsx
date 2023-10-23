@@ -49,6 +49,7 @@ function WebTesting() {
           form.current.mobile_no.value = "";
           form.current.user_email.value = "";
           form.current.message.value = "";
+          setVerified(false);
         },
         (error) => {
           console.log(error.text);
